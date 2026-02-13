@@ -13,7 +13,7 @@ Gnd->Gnd-
 D0-> GPIO
 */
 #include <Servo.h>
-#define IR 27 // define 27 for Ir sensor
+#define IR 27  //define 27 for Ir sensor
 
 Servo myservo; //create servo object
 

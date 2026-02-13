@@ -19,7 +19,7 @@ Servo myservo; //create servo object
 
 void setup(){
     pinMode(IR,INPUT); //Ir pin as input
-    myservo.attach(28)  //Attaches servo pin on 28
+    myservo.attach(28);  //Attaches servo pin on 28
     
 }
 void loop(){

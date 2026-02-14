@@ -1,34 +1,48 @@
-/*
-Smart door lock system
-Connections:
-
-Servo motor
-red pin ->5v
-brown pin-> Gnd
-orange pin-> any GPIO
-
-IR sensor
-Vcc->5v
-Gnd->Gnd-
-D0-> GPIO
-*/
 #include <Servo.h>
-#define IR 27  //define 27 for Ir sensor
 
-Servo myservo; //create servo object
+Servo doorServo;
 
-void setup(){
-    pinMode(IR,INPUT); //Ir pin as input
-    myservo.attach(28);  //Attaches servo pin on 28
-    
+const int pirPin = 7;      
+const int servoPin = 8;    
+const int ledPin = 9;     // LED connected to GP13
+
+
+void setup() {
+  Serial.begin(9600);
+
+  pinMode(pirPin, INPUT);
+  pinMode(ledPin, OUTPUT);
+  pinMode(4, OUTPUT);
+
+
+  doorServo.attach(servoPin);
+  doorServo.write(0);   // Door closed
+
+  digitalWrite(ledPin, LOW);  // LED OFF
+  Serial.println("System Ready...");
 }
-void loop(){
-    if(digitalRead(IR)){//check if value of sensor is 1
-        myservo.write(180);// if value is 1 then ture motor 180°
-    }
-    else{
-        myservo.write(0); //turn motor to 0°
-        delay(1000);
-    }
-    delay(100);
+
+void loop() {
+  bool motion = digitalRead(pirPin);
+
+  if (motion == 1 ) {
+    Serial.println("Motion Detected → Opening Door");
+    
+    doorServo.write(90);        // Open door
+    digitalWrite(ledPin, HIGH); // LED ON
+    digitalWrite(4, HIGH); // LED ON
+    
+    
+    delay(3000);
+  }
+else{
+
+    Serial.println("Closing Door");
+    
+    doorServo.write(0);         // Close door
+    digitalWrite(ledPin, LOW);  // LED OFF
+    digitalWrite(4, LOW); 
+    
+    delay(2000);
+  }
 }
